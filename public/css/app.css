@@ -103,12 +103,15 @@ footer .btn-primary:active {
 }
 .messages-list li {
   line-height: 24px;
+  color: #6f6f6f;
+}
+.messages-list li:nth-child(odd) {
+  color: #4f4f4f;
 }
 .messages-list li.message-type-notice {
   font-weight: bold;
 }
 .messages-list li .timestamp {
-  color: #6f6f6f;
   display: inline-block;
   margin-right: 12px;
   font-size: 14px;
@@ -117,6 +120,7 @@ footer .btn-primary:active {
   display: inline-block;
   margin-right: 8px;
   font-weight: bold;
+  color: #6f6f6f;
 }
 
 .f-no-select {

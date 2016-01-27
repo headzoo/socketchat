@@ -124,21 +124,27 @@ footer {
 .messages-list {
   li {
     line-height: 24px;
+    color: #6f6f6f;
+    
+    &:nth-child(odd) {
+      color: #4f4f4f;
+    }
     
     &.message-type-notice {
       font-weight: bold;
     }
     
     .timestamp {
-      color: #6f6f6f;
       display: inline-block;
       margin-right: 12px;
       font-size: 14px;
     }
+    
     .nickname {
       display: inline-block;
       margin-right: 8px;
       font-weight: bold;
+      color: #6f6f6f;
     }
   }
 }

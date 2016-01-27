@@ -3,6 +3,7 @@
 var React      = require('react');
 var Reflux     = require('reflux');
 var formatters = require('../util/formatters');
+var Linkify    = require('react-linkify');
 var ReactEmoji = require('react-emoji');
 
 var emojify_opts = {
@@ -34,7 +35,9 @@ var Messages = React.createClass({
                         <span className="timestamp">{formatters.date(messages[i].time)}</span>
                         <span className="nickname">{messages[i].user}:</span>
                         <span className="message" style={styles}>
-                            {this.emojify(messages[i].text, emojify_opts)}
+                            <Linkify>
+                                {this.emojify(messages[i].text, emojify_opts)}
+                            </Linkify>
                         </span>
                     </li>
                 );
@@ -43,7 +46,9 @@ var Messages = React.createClass({
                     <li key={i} className="message-type-notice">
                         <span className="timestamp">{formatters.date(messages[i].time)}</span>
                         <span className="message" style={styles}>
-                            {this.emojify(messages[i].text, emojify_opts)}
+                            <Linkify>
+                                {this.emojify(messages[i].text, emojify_opts)}
+                            </Linkify>
                         </span>
                     </li>
                 );
