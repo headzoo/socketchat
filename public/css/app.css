@@ -115,12 +115,28 @@ footer .btn-primary:active {
   display: inline-block;
   margin-right: 12px;
   font-size: 14px;
+  vertical-align: top;
 }
 .messages-list li .nickname {
   display: inline-block;
   margin-right: 8px;
   font-weight: bold;
   color: #6f6f6f;
+  vertical-align: top;
+}
+.messages-list li .message,
+.messages-list li .linkify {
+  vertical-align: top;
+}
+.messages-list li .message span,
+.messages-list li .linkify span {
+  vertical-align: top;
+}
+.messages-list li .message img,
+.messages-list li .linkify img,
+.messages-list li .message video,
+.messages-list li .linkify video {
+  max-height: 200px;
 }
 
 .f-no-select {

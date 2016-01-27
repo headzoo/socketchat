@@ -3,7 +3,7 @@
 var React      = require('react');
 var Reflux     = require('reflux');
 var formatters = require('../util/formatters');
-var Linkify    = require('react-linkify');
+var Linkify    = require('../utils/linkify');
 var ReactEmoji = require('react-emoji');
 
 var emojify_opts = {

@@ -138,6 +138,7 @@ footer {
       display: inline-block;
       margin-right: 12px;
       font-size: 14px;
+      vertical-align: top;
     }
     
     .nickname {
@@ -145,6 +146,18 @@ footer {
       margin-right: 8px;
       font-weight: bold;
       color: #6f6f6f;
+      vertical-align: top;
+    }
+    
+    .message, .linkify {
+      vertical-align: top;
+      
+      span {
+        vertical-align: top;
+      }
+      img, video {
+        max-height: 200px;
+      }
     }
   }
 }
