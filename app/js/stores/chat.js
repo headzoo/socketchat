@@ -1,8 +1,9 @@
 'use strict';
 
-var Reflux      = require('reflux');
-var ChatActions = require('../actions/chat');
-var io          = require('socket.io-client');
+var Reflux       = require('reflux');
+var ChatActions  = require('../actions/chat');
+var ErrorActions = require('../actions/error');
+var io           = require('socket.io-client');
 
 module.exports = Reflux.createStore({
     listenables: [ChatActions],
@@ -29,7 +30,7 @@ module.exports = Reflux.createStore({
     },
 
     onSend: function(message) {
-        this.socket.emit("chat message", message);
+        this.socket.emit("room.message", message);
     },
 
     onAuthenticate: function() {
@@ -44,25 +45,25 @@ module.exports = Reflux.createStore({
         this.socket.on("connect", function() {
             this.socket.on("authenticated", ChatActions.socketAuthenticated);
             this.socket.on("unauthorized", ChatActions.socketUnauthorized);
-            this.socket.on("room join", ChatActions.socketRoomJoin);
-            this.socket.on("room leave", ChatActions.socketRoomLeave);
-            this.socket.on("room load", ChatActions.socketRoomLoad);
-            this.socket.on("room messages", ChatActions.socketRoomMessages);
-            this.socket.on("room users", ChatActions.socketRoomUsers);
-            this.socket.on("chat message", ChatActions.socketChatMessage);
+            this.socket.on("room.join", ChatActions.socketRoomJoin);
+            this.socket.on("room.leave", ChatActions.socketRoomLeave);
+            this.socket.on("room.load", ChatActions.socketRoomLoad);
+            this.socket.on("room.messages", ChatActions.socketRoomMessages);
+            this.socket.on("room.users", ChatActions.socketRoomUsers);
+            this.socket.on("room.message", ChatActions.socketRoomMessage);
 
             ChatActions.authenticate();
         }.bind(this));
     },
 
     onSocketAuthenticated: function() {
-        this.socket.emit("room join");
+        this.socket.emit("room.join");
         this.chat.connected = true;
         this.trigger(this.chat);
     },
 
     onSocketUnauthorized: function(err) {
-        console.log(err);
+        ErrorActions.unauthorized(err);
     },
 
     onSocketRoomLoad: function(room) {
@@ -96,7 +97,7 @@ module.exports = Reflux.createStore({
         this.trigger(this.chat);
     },
 
-    onSocketChatMessage: function(message) {
+    socketRoomMessage: function(message) {
         this.chat.messages.push(message);
         this.trigger(this.chat);
     }

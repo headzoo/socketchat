@@ -8,6 +8,24 @@
   z-index: 500;
   width: 100%;
   height: 100%;
+  
+  .alert-enter {
+    opacity: 0.01;
+  }
+
+  .alert-enter.alert-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+  }
+
+  .alert-leave {
+    opacity: 1;
+  }
+
+  .alert-leave.alert-leave-active {
+    opacity: 0.01;
+    transition: opacity 100ms ease-in;
+  }
 }
 
 .mask-enter {

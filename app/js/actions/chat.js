@@ -12,7 +12,7 @@ module.exports = Reflux.createActions([
     'socketRoomJoin',
     'socketRoomLeave',
     'socketRoomLoad',
-    'socketChatMessage',
+    'socketRoomMessage',
     'socketRoomMessages',
     'socketRoomUsers'
 ]);

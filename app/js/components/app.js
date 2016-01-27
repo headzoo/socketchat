@@ -102,6 +102,7 @@ var App = React.createClass({
      */
     handleJoin: function(nick, pass) {
         ChatActions.ready(this.props.host, nick, pass);
+        this.input_dom.focus();
     },
 
     /**

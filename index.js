@@ -1,7 +1,8 @@
 var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var socket = require('socket.io');
+var io = socket(http);
 
 Array.prototype.remove = function() {
     var what, a = arguments, L = a.length, ax;
@@ -15,23 +16,28 @@ Array.prototype.remove = function() {
 };
 
 var users    = [];
-var messages = [];
+var messages = [
+    createNoticeMessage("Welcome to the room! Obey the rules!"),
+    createUserMessage("Sean", "How's everyone doing today?"),
+    createUserMessage("Josh", "I'm doing alright."),
+    createUserMessage("Alex", "Yep, me too.")
+];
 var registered = {
     "sean": "12345",
     "josh": "12345",
     "alex": "12345"
 };
 
-app.use(express.static('public'));
-app.get('/', function(req, res){
-    res.sendFile('index.html', { root: __dirname });
+app.use(express.static("public"));
+app.get("/", function(req, res){
+    res.sendFile("index.html", { root: __dirname });
 });
 
-require('socketio-auth')(io, {
+require("socketio-auth")(io, {
     authenticate: function (socket, data, callback) {
         var username = data.username.toLowerCase();
         if (registered[username] == undefined || registered[username] != data.password) {
-            return callback(new Error("User not found"));
+            return callback(new Error("Invalid username or password."));
         }
         return callback(null, true);
     },
@@ -41,45 +47,50 @@ require('socketio-auth')(io, {
     }
 });
 
-io.on('connection', function(socket) {
-    socket.on('room join', function() {
-        console.log(socket.client.nick + " joined room");
-        
+io.on("connection", function(socket) {
+    socket.on("room.join", function() {
         users.push(socket.client.nick);
-        socket.emit('room load', {
+        socket.emit("room.load", {
             users: users,
             messages: messages
         });
-        socket.emit('chat message', {
-            time: new Date(),
-            type: "notice",
-            text: "Welcome to the room! Obey the rules!"
-        });
-        socket.broadcast.emit('room join', socket.client.nick);
+        socket.broadcast.emit("room.join", socket.client.nick);
     });
     
-    socket.on('chat message', function(text) {
-        var m = {
-            time: new Date(),
-            type: "user",
-            user: socket.client.nick,
-            text: text
-        };
+    socket.on("room.message", function(text) {
+        var m = createUserMessage(socket.client.nick, text);
         messages.push(m);
-        socket.emit('chat message', m);
-        socket.broadcast.emit('chat message', m);
+        socket.emit("room.message", m);
+        socket.broadcast.emit("room.message", m);
     });
 
-    socket.on('disconnect', function() {
+    socket.on("disconnect", function() {
         users.remove(socket.client.nick);
-        socket.broadcast.emit('room leave', socket.client.nick);
+        socket.broadcast.emit("room.leave", socket.client.nick);
     });
     
     setInterval(function() {
-        socket.emit('room users', users);
+        socket.emit("room.users", users);
     }, 15000);
 });
 
 http.listen(5001, function(){
-    console.log('listening on *:5001');
+    console.log("listening on *:5001");
 });
+
+function createUserMessage(user, text) {
+    return {
+        time: new Date(),
+        type: "user",
+        user: user,
+        text: text
+    }
+}
+
+function createNoticeMessage(text) {
+    return  {
+        time: new Date(),
+        type: "notice",
+        text: text
+    }
+}
