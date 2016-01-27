@@ -6,6 +6,8 @@ module.exports = Reflux.createActions([
     'ready',
     'send',
     'connect',
+    'register',
+    'registered',
     'authenticate',
     'socketAuthenticated',
     'socketUnauthorized',

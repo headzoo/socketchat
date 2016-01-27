@@ -54,6 +54,7 @@
     "socket.io-client": "^1.4.5",
     "socketio-auth": "0.0.5",
     "sprintf": "^0.1.5",
-    "toastr": "^2.1.2"
+    "toastr": "^2.1.2",
+    "validator": "^4.5.1"
   }
 }

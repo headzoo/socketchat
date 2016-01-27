@@ -39,6 +39,26 @@ module.exports = Reflux.createStore({
             password: this.chat.pass
         });
     },
+    
+    onRegister: function(username, email, password) {
+        this.socket = io(this.server);
+        this.socket.on("connect", function() {
+            this.socket.on("registered", ChatActions.registered);
+            this.socket.emit("register", {
+                username: username,
+                email: email,
+                password: password
+            });
+        }.bind(this));
+    },
+    
+    onRegistered: function(info) {
+        if (info.error != undefined) {
+            ErrorActions.registration(info.error);
+        } else {
+            ChatActions.ready("local.socketchat.com", info.username, info.password);
+        }
+    },
 
     onConnect: function() {
         this.socket = io(this.server);

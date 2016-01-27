@@ -60,7 +60,7 @@ var App = React.createClass({
     render: function() {
         var mask = null;
         if (!this.state.chat.connected) {
-            mask = (<Mask key="mask" nick={this.props.nick} onJoin={this.handleJoin} />);
+            mask = (<Mask key="mask" nick={this.props.nick} onJoin={this.handleJoin} onRegister={this.handleRegister} />);
         }
 
         return (
@@ -116,6 +116,10 @@ var App = React.createClass({
     handleJoin: function(nick, pass) {
         ChatActions.ready(this.props.host, nick, pass);
         this.input_dom.focus();
+    },
+
+    handleRegister: function(username, email, password) {
+        ChatActions.register(username, email, password);
     },
 
     /**
