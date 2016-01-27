@@ -1,0 +1,34 @@
+@import "theme";
+
+.mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: @color-red;
+  z-index: 500;
+  width: 100%;
+  height: 100%;
+}
+
+.mask-enter {
+  opacity: 0.01;
+}
+
+.mask-enter.mask-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.mask-leave {
+  opacity: 1;
+}
+
+.mask-leave.mask-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+.mask-nick-form {
+  color: #FFF;
+  margin-top: 140px;
+}

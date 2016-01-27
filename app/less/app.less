@@ -1,0 +1,145 @@
+@import "theme";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+}
+
+body {
+  font: 16px Helvetica, Arial;
+  background-color: black;
+}
+
+#mount {
+  height: 100%;
+}
+
+.wrap {
+  height: 100%;
+}
+
+.container-top {
+  height:100%;
+  display: table;
+  width: 100%;
+  margin-bottom: -50px;
+  padding: 0 0 50px 0;
+
+  .row {
+    height: 100%;
+    display: table-row;
+  }
+}
+
+.container-bottom {
+  display: table;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+  
+  .row {
+    height: 50px;
+    display: table-row;
+  }
+}
+
+.col-tall {
+  display: table-cell;
+  float: none;
+}
+
+footer {
+  height: 50px;
+  width: 100%;
+  
+  .input-group {
+    margin: 8px 0 8px 8px;
+  }
+  
+  .form-control {
+    border-radius: 0;
+  }
+  
+  .btn-primary {
+    border-radius: 0;
+    background-color: @color-red;
+    border-color: lighten(@color-red, 5%);
+    
+    &:hover, &:focus, &:active {
+      outline: none;
+      background-color: lighten(@color-red, 5%);
+      border-color: lighten(@color-red, 5%);
+    }
+  }
+}
+
+.users-list-wrap, .messages-list-wrap, .user-input-wrap, .user-button-wrap {
+  padding: 0;
+}
+
+.users-list-wrap {
+  border-left: 1px solid #565656;
+  
+}
+
+.users-list-wrap, .messages-list-wrap {
+  background-color: black;
+  color: white;
+  border-bottom: 1px solid #565656;
+}
+
+.messages-list-wrap {
+  margin-left: 8px;
+}
+
+.users-list, .messages-list {
+  margin: 0;
+  padding: 8px;
+  list-style-type: none;
+}
+
+.users-list {
+  li {
+    padding: 6px 8px;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: @color-red;
+    }
+    &:nth-child(odd) {
+      background-color: #333;
+      
+      &:hover {
+        background-color: @color-red;
+      }
+    }
+  }
+}
+
+.messages-list {
+  li {
+    line-height: 24px;
+    
+    &.message-type-notice {
+      font-weight: bold;
+      color: #BF2021;
+    }
+    
+    .timestamp {
+      color: #6f6f6f;
+      display: inline-block;
+      margin-right: 12px;
+      font-size: 14px;
+    }
+    .nickname {
+      display: inline-block;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+  }
+}

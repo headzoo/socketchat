@@ -1,0 +1,150 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  height: 100%;
+}
+body {
+  font: 16px Helvetica, Arial;
+  background-color: black;
+}
+#mount {
+  height: 100%;
+}
+.wrap {
+  height: 100%;
+}
+.container-top {
+  height: 100%;
+  display: table;
+  width: 100%;
+  margin-bottom: -50px;
+  padding: 0 0 50px 0;
+}
+.container-top .row {
+  height: 100%;
+  display: table-row;
+}
+.container-bottom {
+  display: table;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+}
+.container-bottom .row {
+  height: 50px;
+  display: table-row;
+}
+.col-tall {
+  display: table-cell;
+  float: none;
+}
+footer {
+  height: 50px;
+  width: 100%;
+}
+footer .input-group {
+  margin: 8px 0 8px 8px;
+}
+footer .form-control {
+  border-radius: 0;
+}
+footer .btn-primary {
+  border-radius: 0;
+  background-color: #760607;
+  border-color: #8e0708;
+}
+footer .btn-primary:hover,
+footer .btn-primary:focus,
+footer .btn-primary:active {
+  outline: none;
+  background-color: #8e0708;
+  border-color: #8e0708;
+}
+.users-list-wrap,
+.messages-list-wrap,
+.user-input-wrap,
+.user-button-wrap {
+  padding: 0;
+}
+.users-list-wrap {
+  border-left: 1px solid #565656;
+}
+.users-list-wrap,
+.messages-list-wrap {
+  background-color: black;
+  color: white;
+  border-bottom: 1px solid #565656;
+}
+.messages-list-wrap {
+  margin-left: 8px;
+}
+.users-list,
+.messages-list {
+  margin: 0;
+  padding: 8px;
+  list-style-type: none;
+}
+.users-list li {
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.users-list li:hover {
+  background-color: #760607;
+}
+.users-list li:nth-child(odd) {
+  background-color: #333;
+}
+.users-list li:nth-child(odd):hover {
+  background-color: #760607;
+}
+.messages-list li {
+  line-height: 24px;
+}
+.messages-list li.message-type-notice {
+  font-weight: bold;
+  color: #BF2021;
+}
+.messages-list li .timestamp {
+  color: #6f6f6f;
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 14px;
+}
+.messages-list li .nickname {
+  display: inline-block;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #760607;
+  z-index: 500;
+  width: 100%;
+  height: 100%;
+}
+.mask-enter {
+  opacity: 0.01;
+}
+.mask-enter.mask-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.mask-leave {
+  opacity: 1;
+}
+.mask-leave.mask-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+.mask-nick-form {
+  color: #FFF;
+  margin-top: 140px;
+}
+
