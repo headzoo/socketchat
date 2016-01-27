@@ -11,6 +11,7 @@ var Messages           = require('./messages');
 var ChatStore          = require('../stores/chat');
 var ChatActions        = require('../actions/chat');
 var Mask               = require('./mask');
+var InputColor         = require('react-input-color');
 
 var App = React.createClass({
     mixins: [
@@ -32,16 +33,24 @@ var App = React.createClass({
 
     /**
      * 
-     * @returns {{input: string}}
+     * @returns {{text: string, color: string}}
      */
     getInitialState: function() {
         return {
-            input: ""
+            text: "",
+            color: "#FFFFFF"
         }
     },
-    
+
+    /**
+     * 
+     */
     componentDidMount: function() {
-        this.input_dom = ReactDOM.findDOMNode(this.refs.input);
+        this.input_dom = ReactDOM.findDOMNode(this.refs.text);
+        var text_color = localStorage.getItem("text_color");
+        if (text_color) {
+            this.setState({color: text_color});
+        }
     },
 
     /**
@@ -71,20 +80,24 @@ var App = React.createClass({
                         <div className="col-lg-10 user-input-wrap">
                             <div className="input-group">
                                 <input
-                                    ref="input"
+                                    ref="text"
                                     type="text"
                                     className="form-control"
                                     autoComplete="off"
                                     placeholder="Enter Message"
                                     onKeyDown={this.handleInputKeyDown}
-                                    valueLink={this.linkState('input')} />
+                                    valueLink={this.linkState('text')} />
                                 <span className="input-group-btn">
                                     <button className="btn btn-primary" onClick={this.handleSend}>SEND</button>
                                 </span>
                             </div>
                         </div>
                         <div className="col-lg-2 user-button-wrap">
-                            
+                            <div className="input-group">
+                                <InputColor
+                                    value={this.state.color}
+                                    onChange={this.handleColorChange} />
+                            </div>
                         </div>
                     </footer>
                 </div>
@@ -117,13 +130,25 @@ var App = React.createClass({
 
     /**
      * 
+     * @param c
+     */
+    handleColorChange: function(c) {
+        this.setState({color: c});
+        localStorage.setItem("text_color", c);
+    },
+
+    /**
+     * 
      */
     handleSend: function() {
         if (this.state.input == "") {
             return;
         }
-        ChatActions.send(this.state.input);
-        this.setState({input: ""});
+        ChatActions.send({
+            text: this.state.text,
+            color: this.state.color
+        });
+        this.setState({text: ""});
         this.input_dom.focus();
     }
 });
