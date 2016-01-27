@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "paths": {
-    "less": "./app/less/**/*.less",
-    "js": "./app/js/**/*.js"
+    "less": "./public/app/less/**/*.less",
+    "js": "./public/app/js/**/*.js"
   },
   "dest": {
     "style": "app.css",
