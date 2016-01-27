@@ -1,47 +1,56 @@
-var app = require('express')();
+var app     = require('express')();
 var express = require('express');
-var http = require('http').Server(app);
-var socket = require('socket.io');
-var io = socket(http);
+var http    = require('http').Server(app);
+var socket  = require('socket.io');
+var mysql   = require("mysql");
+var bcrypt  = require('bcrypt');
+var io      = socket(http);
 
-Array.prototype.remove = function() {
-    var what, a = arguments, L = a.length, ax;
-    while (L && this.length) {
-        what = a[--L];
-        while ((ax = this.indexOf(what)) !== -1) {
-            this.splice(ax, 1);
-        }
+var db = mysql.createConnection({
+    host:     "localhost",
+    user:     "chatter",
+    password: "lFOWuJXAUFS7z86yBnLFAK",
+    database: "socketchat"
+});
+db.connect(function(err) {
+    if (err) {
+        console.log('Error connecting to Db');
     }
-    return this;
-};
+});
 
 var users    = [];
 var messages = [
     createNoticeMessage("Welcome to the room! Obey the rules!"),
     createUserMessage("Sean", "How's everyone doing today?"),
     createUserMessage("Josh", "I'm doing alright."),
-    createUserMessage("Alex", "Yep, me too.")
+    createUserMessage("Dimitri", "Yep, me too.")
 ];
-var registered = {
-    "sean": "12345",
-    "josh": "12345",
-    "alex": "12345"
-};
 
 app.use(express.static("public"));
-app.get("/", function(req, res){
-    res.sendFile("index.html", { root: __dirname });
+app.get("/", function(req, res) {
+    res.sendFile("index.html", {root: __dirname});
 });
 
 require("socketio-auth")(io, {
-    authenticate: function (socket, data, callback) {
-        var username = data.username.toLowerCase();
-        if (registered[username] == undefined || registered[username] != data.password) {
-            return callback(new Error("Invalid username or password."));
-        }
-        return callback(null, true);
+    authenticate: function(socket, data, callback) {
+        db.query("SELECT * FROM `user` WHERE ?", {username: data.username}, function(err, res) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (res.length == 0) {
+                return callback(new Error("Invalid username or password."));
+            }
+            bcrypt.compare(data.password, res[0].password, function(err, res) {
+                if (err) console.log(err);
+                if (!res) {
+                    callback(new Error("Invalid username or password."));
+                }
+                callback(null, true);
+            });
+        });
     },
-    
+
     postAuthenticate: function(socket, data) {
         socket.client.nick = data.username;
     }
@@ -51,12 +60,12 @@ io.on("connection", function(socket) {
     socket.on("room.join", function() {
         users.push(socket.client.nick);
         socket.emit("room.load", {
-            users: users,
+            users:    users,
             messages: messages
         });
         socket.broadcast.emit("room.join", socket.client.nick);
     });
-    
+
     socket.on("room.message", function(text) {
         var m = createUserMessage(socket.client.nick, text);
         messages.push(m);
@@ -65,16 +74,18 @@ io.on("connection", function(socket) {
     });
 
     socket.on("disconnect", function() {
-        users.remove(socket.client.nick);
+        users = users.filter(function(u) {
+            return u != socket.client.nick;
+        });
         socket.broadcast.emit("room.leave", socket.client.nick);
     });
-    
+
     setInterval(function() {
         socket.emit("room.users", users);
     }, 15000);
 });
 
-http.listen(5001, function(){
+http.listen(5001, function() {
     console.log("listening on *:5001");
 });
 
@@ -88,7 +99,7 @@ function createUserMessage(user, text) {
 }
 
 function createNoticeMessage(text) {
-    return  {
+    return {
         time: new Date(),
         type: "notice",
         text: text
