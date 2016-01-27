@@ -26,3 +26,14 @@ INSERT INTO `user` (`username`, `email`, `password`)
   VALUES('Josh', 'josh@dulotech.com', '$2a$10$uqzXdDJYvetXJZ2yosNKNe00M.L3PlxIxY./QimKK0JrCUINHotBq');
 INSERT INTO `user` (`username`, `email`, `password`)
   VALUES('Dimitri', 'dimitri@dulotech.com', '$2a$10$o2cOCMqYONPG7Sy38Aegs.tS.mDAbd86iIn7HJwP/u7soQPfe6laC');
+
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(14) NOT NULL,
+  `color`    CHAR(7) NOT NULL,
+  `text`     TEXT NOT NULL,
+  `created`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
